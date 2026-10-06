@@ -1,12 +1,19 @@
 const channels = [
-  { id: "espn-deportes", name: "ESPN Deportes", group: "ESPN", detail: "Fútbol y deportes en español", streamUrl: "" },
-  { id: "espn-1", name: "ESPN 1", group: "ESPN", detail: "Programación deportiva", streamUrl: "" },
-  { id: "espn-2", name: "ESPN 2", group: "ESPN", detail: "Eventos y fútbol en vivo", streamUrl: "" },
-  { id: "espn-premium", name: "ESPN Premium", group: "ESPN", detail: "Fútbol premium", streamUrl: "" },
-  { id: "fox-sports", name: "FOX Sports", group: "FOX", detail: "Deportes y competiciones", streamUrl: "" },
-  { id: "fox-sports-2", name: "FOX Sports 2", group: "FOX", detail: "Eventos deportivos", streamUrl: "" },
-  { id: "tudn", name: "TUDN", group: "Otros", detail: "Fútbol en español", streamUrl: "" },
-  { id: "dazn", name: "DAZN", group: "Otros", detail: "Deportes y fútbol", streamUrl: "" }
+  {
+    id: "espn-deportes",
+    name: "ESPN Deportes",
+    group: "ESPN",
+    detail: "Fútbol y deportes en español",
+    sourceType: "iframe",
+    embedUrl: "https://ntv.st/embed?t=Z0hobzNYTEYyVE4xRHNDRDNBSlFzbEdRM29PSXN3Vkw0UXROczFlMkh5OFZ0bzQrcGVPbVhGaEIrMjZDM0VMR1REMkFOU3FMYzJrbTBPMU5CZzZNY3RuZG8vRWNObERDSFZoR1pYbTdHZkc3Y1d3TE1mNWdWZVlJRk02ZHVHY29ZcEdOeWphdmtrMXpFdld0WGhFZy93PT0~"
+  },
+  { id: "espn-1", name: "ESPN 1", group: "ESPN", detail: "Programación deportiva", sourceType: "video", streamUrl: "" },
+  { id: "espn-2", name: "ESPN 2", group: "ESPN", detail: "Eventos y fútbol en vivo", sourceType: "video", streamUrl: "" },
+  { id: "espn-premium", name: "ESPN Premium", group: "ESPN", detail: "Fútbol premium", sourceType: "video", streamUrl: "" },
+  { id: "fox-sports", name: "FOX Sports", group: "FOX", detail: "Deportes y competiciones", sourceType: "video", streamUrl: "" },
+  { id: "fox-sports-2", name: "FOX Sports 2", group: "FOX", detail: "Eventos deportivos", sourceType: "video", streamUrl: "" },
+  { id: "tudn", name: "TUDN", group: "Otros", detail: "Fútbol en español", sourceType: "video", streamUrl: "" },
+  { id: "dazn", name: "DAZN", group: "Otros", detail: "Deportes y fútbol", sourceType: "video", streamUrl: "" }
 ];
 
 const grid = document.getElementById("channelGrid");
@@ -21,6 +28,7 @@ const overlay = document.getElementById("playerOverlay");
 const playerTitle = document.getElementById("playerTitle");
 const playerMeta = document.getElementById("playerMeta");
 const video = document.getElementById("videoPlayer");
+const embedPlayer = document.getElementById("embedPlayer");
 const placeholder = document.getElementById("videoPlaceholder");
 
 let activeFilter = "Todos";
@@ -74,6 +82,12 @@ function renderChannels() {
   }
 }
 
+function resetPlaceholder() {
+  placeholder.querySelector("h3").textContent = "Fuente pendiente";
+  placeholder.querySelector("p").textContent =
+    "Este canal todavía no tiene una señal configurada.";
+}
+
 function clearPlayer() {
   if (hlsInstance) {
     hlsInstance.destroy();
@@ -84,16 +98,28 @@ function clearPlayer() {
   video.removeAttribute("src");
   video.load();
   video.style.display = "none";
+
+  embedPlayer.src = "about:blank";
+  embedPlayer.style.display = "none";
+
   placeholder.hidden = false;
 }
 
 function openPlayer(channel) {
   clearPlayer();
+  resetPlaceholder();
 
   playerTitle.textContent = channel.name;
   playerMeta.textContent = channel.detail;
   overlay.hidden = false;
   document.body.classList.add("player-open");
+
+  if (channel.sourceType === "iframe" && channel.embedUrl) {
+    placeholder.hidden = true;
+    embedPlayer.style.display = "block";
+    embedPlayer.src = channel.embedUrl;
+    return;
+  }
 
   if (!channel.streamUrl) {
     placeholder.hidden = false;
@@ -140,10 +166,7 @@ function closePlayer() {
   clearPlayer();
   overlay.hidden = true;
   document.body.classList.remove("player-open");
-
-  placeholder.querySelector("h3").textContent = "Fuente pendiente";
-  placeholder.querySelector("p").textContent =
-    "Este canal todavía no tiene una señal configurada.";
+  resetPlaceholder();
 }
 
 searchInput.addEventListener("input", renderChannels);
