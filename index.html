@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <meta name="theme-color" content="#f5f5f5" />
+  <meta name="description" content="Esto es-Futbol - canales deportivos en una interfaz simple y moderna." />
+  <title>Esto es-Futbol</title>
+  <link rel="preconnect" href="https://unpkg.com" />
+  <link rel="stylesheet" href="styles.css" />
+  <script defer src="https://unpkg.com/lucide@0.468.0/dist/umd/lucide.min.js"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/hls.js@1/dist/hls.min.js"></script>
+  <script defer src="app.js"></script>
+</head>
+<body>
+  <div class="app-shell">
+    <header class="topbar">
+      <div class="brand">
+        <div class="brand-mark" aria-hidden="true">
+          <i data-lucide="badge-play"></i>
+        </div>
+        <div>
+          <p class="eyebrow">FÚTBOL EN DIRECTO</p>
+          <h1>Esto es-Futbol</h1>
+        </div>
+      </div>
+
+      <button class="icon-button" type="button" aria-label="Actualizar canales" id="refreshButton">
+        <i data-lucide="refresh-cw"></i>
+      </button>
+    </header>
+
+    <main>
+      <section class="hero">
+        <div>
+          <span class="status-pill"><span class="status-dot"></span> Canales disponibles</span>
+          <h2>Tu fútbol, sin vueltas.</h2>
+          <p>Elige un canal y abre el reproductor desde cualquier dispositivo.</p>
+        </div>
+
+        <div class="hero-icon" aria-hidden="true">
+          <i data-lucide="circle-play"></i>
+        </div>
+      </section>
+
+      <section class="toolbar" aria-label="Herramientas de canales">
+        <label class="search-box" for="channelSearch">
+          <i data-lucide="search"></i>
+          <input id="channelSearch" type="search" placeholder="Buscar canal" autocomplete="off" />
+        </label>
+
+        <div class="filters" id="filters" role="group" aria-label="Filtrar canales">
+          <button class="filter-chip active" data-filter="Todos" type="button">Todos</button>
+          <button class="filter-chip" data-filter="ESPN" type="button">ESPN</button>
+          <button class="filter-chip" data-filter="FOX" type="button">FOX</button>
+          <button class="filter-chip" data-filter="Otros" type="button">Otros</button>
+        </div>
+      </section>
+
+      <section class="section-heading">
+        <div>
+          <p class="eyebrow">CANALES</p>
+          <h3>Elige qué ver</h3>
+        </div>
+        <span id="channelCount" class="count-badge">0</span>
+      </section>
+
+      <section class="channel-grid" id="channelGrid" aria-live="polite"></section>
+
+      <div class="empty-state" id="emptyState" hidden>
+        <i data-lucide="search-x"></i>
+        <h3>No encontramos ese canal</h3>
+        <p>Prueba con otro nombre o cambia el filtro.</p>
+      </div>
+    </main>
+  </div>
+
+  <div class="player-overlay" id="playerOverlay" hidden>
+    <div class="player-backdrop" data-close-player></div>
+
+    <section class="player-sheet" role="dialog" aria-modal="true" aria-labelledby="playerTitle">
+      <header class="player-header">
+        <div>
+          <p class="eyebrow">REPRODUCIENDO</p>
+          <h2 id="playerTitle">Canal</h2>
+        </div>
+
+        <button class="icon-button dark" type="button" aria-label="Cerrar reproductor" data-close-player>
+          <i data-lucide="x"></i>
+        </button>
+      </header>
+
+      <div class="video-wrap">
+        <video id="videoPlayer" controls playsinline></video>
+
+        <div class="video-placeholder" id="videoPlaceholder">
+          <div class="video-placeholder-icon">
+            <i data-lucide="tv"></i>
+          </div>
+          <h3>Fuente pendiente</h3>
+          <p>Este canal todavía no tiene una señal configurada.</p>
+        </div>
+      </div>
+
+      <div class="player-footer">
+        <div class="live-indicator">
+          <span></span>
+          EN DIRECTO
+        </div>
+        <p id="playerMeta">Esto es-Futbol</p>
+      </div>
+    </section>
+  </div>
+
+  <template id="channelCardTemplate">
+    <article class="channel-card">
+      <div class="channel-icon">
+        <i data-lucide="radio-tower"></i>
+      </div>
+
+      <div class="channel-copy">
+        <div class="channel-title-row">
+          <h3 class="channel-name"></h3>
+          <span class="live-badge">EN VIVO</span>
+        </div>
+        <p class="channel-subtitle"></p>
+      </div>
+
+      <button class="play-button" type="button">
+        <i data-lucide="play"></i>
+        <span>Reproducir</span>
+      </button>
+    </article>
+  </template>
+</body>
+</html>
