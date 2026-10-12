@@ -93,6 +93,17 @@
       <div class="video-wrap">
         <video id="videoPlayer" playsinline preload="metadata" hidden></video>
 
+        <iframe
+          id="embedPlayer"
+          title="Reproductor ESPN 5"
+          src="about:blank"
+          sandbox="allow-scripts allow-same-origin allow-forms allow-presentation"
+          allow="autoplay; encrypted-media; picture-in-picture; fullscreen"
+          referrerpolicy="no-referrer"
+          allowfullscreen
+          hidden
+        ></iframe>
+
         <div class="player-loading" id="playerLoading" hidden aria-label="Cargando señal">
           <div class="spinner"></div>
         </div>
@@ -105,7 +116,7 @@
           <p>Este reproductor usa HLS/DASH directo. Añade una fuente autorizada para comenzar.</p>
         </div>
 
-        <div class="custom-controls">
+        <div class="custom-controls" id="customControls">
           <button class="control-button" id="playToggle" type="button" aria-label="Reproducir o pausar">
             <i data-lucide="play"></i>
           </button>
