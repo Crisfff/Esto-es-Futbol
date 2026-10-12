@@ -1,11 +1,11 @@
 const channels = [
   {
-    id: "espn-deportes",
-    name: "ESPN Deportes",
+    id: "espn-5",
+    name: "ESPN 5",
     group: "ESPN",
     detail: "Fútbol y deportes en español",
-    sourceType: "hls",
-    streamUrl: ""
+    sourceType: "iframe",
+    embedUrl: "https://la18hd.su/vivo/canales.php?stream=espn5"
   },
   { id: "espn-1", name: "ESPN 1", group: "ESPN", detail: "Programación deportiva", sourceType: "hls", streamUrl: "" },
   { id: "espn-2", name: "ESPN 2", group: "ESPN", detail: "Eventos y fútbol en vivo", sourceType: "hls", streamUrl: "" },
@@ -28,12 +28,14 @@ const overlay = document.getElementById("playerOverlay");
 const playerTitle = document.getElementById("playerTitle");
 const playerMeta = document.getElementById("playerMeta");
 const video = document.getElementById("videoPlayer");
+const embedPlayer = document.getElementById("embedPlayer");
 const placeholder = document.getElementById("videoPlaceholder");
 const loading = document.getElementById("playerLoading");
 const playToggle = document.getElementById("playToggle");
 const muteToggle = document.getElementById("muteToggle");
 const fullscreenToggle = document.getElementById("fullscreenToggle");
 const playerStatus = document.getElementById("playerStatus");
+const customControls = document.getElementById("customControls");
 
 let activeFilter = "Todos";
 let hlsInstance = null;
@@ -119,6 +121,11 @@ function destroyPlayback() {
   video.removeAttribute("src");
   video.load();
   video.hidden = true;
+
+  embedPlayer.src = "about:blank";
+  embedPlayer.hidden = true;
+
+  customControls.hidden = false;
   placeholder.hidden = false;
   setLoading(false);
   reconnectAttempts = 0;
@@ -237,9 +244,21 @@ function startPlayback(channel, isRetry = false) {
   playerTitle.textContent = channel.name;
   playerMeta.textContent = channel.detail;
 
+  if (channel.sourceType === "iframe" && channel.embedUrl) {
+    placeholder.hidden = true;
+    video.hidden = true;
+    embedPlayer.hidden = false;
+    customControls.hidden = true;
+    setLoading(false);
+    setStatus("EMBED", "live");
+    embedPlayer.src = channel.embedUrl;
+    return;
+  }
+
   if (!channel.streamUrl) {
     placeholder.hidden = false;
     video.hidden = true;
+    embedPlayer.hidden = true;
     setStatus("SIN FUENTE", "idle");
     setLoading(false);
     if (window.lucide) lucide.createIcons();
@@ -247,6 +266,8 @@ function startPlayback(channel, isRetry = false) {
   }
 
   placeholder.hidden = true;
+  embedPlayer.hidden = true;
+  customControls.hidden = false;
   video.hidden = false;
   setLoading(true);
   setStatus(isRetry ? "RECONECTANDO" : "CARGANDO", "warn");
