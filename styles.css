@@ -23,9 +23,7 @@ html {
 body {
   margin: 0;
   min-width: 320px;
-  background:
-    radial-gradient(circle at top right, rgba(0,0,0,.035), transparent 32rem),
-    var(--bg);
+  background: radial-gradient(circle at top right, rgba(0,0,0,.035), transparent 32rem), var(--bg);
   color: var(--text);
   font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "SF Pro Display", "Segoe UI", sans-serif;
   -webkit-font-smoothing: antialiased;
@@ -106,11 +104,7 @@ h1 {
   transition: transform .18s ease, background .18s ease;
 }
 
-.icon-button:hover {
-  transform: translateY(-1px);
-  background: #fafafa;
-}
-
+.icon-button:hover { transform: translateY(-1px); background: #fafafa; }
 .icon-button svg { width: 20px; }
 
 .hero {
@@ -186,11 +180,7 @@ h1 {
   background: rgba(255,255,255,.06);
 }
 
-.hero-icon svg {
-  width: 48px;
-  height: 48px;
-  stroke-width: 1.4;
-}
+.hero-icon svg { width: 48px; height: 48px; stroke-width: 1.4; }
 
 .toolbar {
   display: flex;
@@ -243,7 +233,6 @@ h1 {
   color: #555;
   font-weight: 700;
   font-size: .82rem;
-  transition: background .18s ease, color .18s ease, border-color .18s ease;
 }
 
 .filter-chip.active {
@@ -313,7 +302,6 @@ h1 {
 }
 
 .channel-icon svg { width: 22px; }
-
 .channel-copy { min-width: 0; }
 
 .channel-title-row {
@@ -365,12 +353,6 @@ h1 {
   color: #fff;
   font-size: .78rem;
   font-weight: 800;
-  transition: transform .18s ease, background .18s ease;
-}
-
-.play-button:hover {
-  transform: scale(1.025);
-  background: #2b2b2b;
 }
 
 .play-button svg {
@@ -385,21 +367,9 @@ h1 {
   color: var(--muted);
 }
 
-.empty-state svg {
-  width: 34px;
-  height: 34px;
-  margin-bottom: 12px;
-}
-
-.empty-state h3 {
-  margin-bottom: 6px;
-  color: var(--text);
-}
-
-.empty-state p {
-  margin-bottom: 0;
-  font-size: .9rem;
-}
+.empty-state svg { width: 34px; height: 34px; margin-bottom: 12px; }
+.empty-state h3 { margin-bottom: 6px; color: var(--text); }
+.empty-state p { margin-bottom: 0; font-size: .9rem; }
 
 .player-overlay {
   position: fixed;
@@ -410,8 +380,8 @@ h1 {
 .player-backdrop {
   position: absolute;
   inset: 0;
-  background: rgba(0,0,0,.56);
-  backdrop-filter: blur(7px);
+  background: rgba(0,0,0,.62);
+  backdrop-filter: blur(8px);
 }
 
 .player-sheet {
@@ -455,29 +425,22 @@ h1 {
   position: relative;
   overflow: hidden;
   border-radius: 20px;
-  background: #090909;
-}
-
-.video-wrap video,
-.video-wrap iframe {
-  width: 100%;
-  height: 100%;
-  display: none;
-  border: 0;
-  background: #000;
+  background: #050505;
 }
 
 .video-wrap video {
+  width: 100%;
+  height: 100%;
+  display: block;
   object-fit: contain;
+  background: #000;
 }
 
-.video-wrap iframe {
-  position: absolute;
-  inset: 0;
-}
+.video-wrap video[hidden] { display: none; }
 
 .video-placeholder {
-  height: 100%;
+  position: absolute;
+  inset: 0;
   display: grid;
   place-items: center;
   align-content: center;
@@ -485,6 +448,8 @@ h1 {
   text-align: center;
   color: #bcbcbc;
 }
+
+.video-placeholder[hidden] { display: none; }
 
 .video-placeholder-icon {
   width: 62px;
@@ -498,15 +463,89 @@ h1 {
   color: #fff;
 }
 
-.video-placeholder h3 {
-  margin-bottom: 7px;
+.video-placeholder h3 { margin-bottom: 7px; color: #fff; }
+
+.video-placeholder p {
+  max-width: 420px;
+  margin-bottom: 0;
+  font-size: .86rem;
+}
+
+.player-loading {
+  position: absolute;
+  inset: 0;
+  z-index: 4;
+  display: grid;
+  place-items: center;
+  pointer-events: none;
+  background: rgba(0,0,0,.08);
+}
+
+.player-loading[hidden] { display: none; }
+
+.spinner {
+  width: 42px;
+  height: 42px;
+  border: 3px solid rgba(255,255,255,.2);
+  border-top-color: #fff;
+  border-radius: 50%;
+  animation: spin .8s linear infinite;
+}
+
+.custom-controls {
+  position: absolute;
+  z-index: 6;
+  left: 12px;
+  right: 12px;
+  bottom: 12px;
+  min-height: 52px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 7px 8px;
+  border: 1px solid rgba(255,255,255,.12);
+  border-radius: 16px;
+  background: rgba(13,13,13,.72);
+  backdrop-filter: blur(14px);
+}
+
+.control-button {
+  width: 38px;
+  height: 38px;
+  display: grid;
+  place-items: center;
+  border: 0;
+  border-radius: 11px;
+  background: rgba(255,255,255,.1);
   color: #fff;
 }
 
-.video-placeholder p {
-  max-width: 360px;
-  margin-bottom: 0;
-  font-size: .86rem;
+.control-button svg { width: 18px; height: 18px; }
+
+.control-spacer { flex: 1; }
+
+.player-status {
+  padding: 6px 9px;
+  border-radius: 999px;
+  background: rgba(255,255,255,.1);
+  color: #d9d9d9;
+  font-size: .65rem;
+  font-weight: 900;
+  letter-spacing: .055em;
+}
+
+.player-status[data-mode="live"] {
+  background: rgba(255,255,255,.95);
+  color: #111;
+}
+
+.player-status[data-mode="warn"] {
+  color: #fff;
+}
+
+.player-status[data-mode="error"] {
+  background: rgba(255,255,255,.16);
+  color: #fff;
 }
 
 .player-footer {
@@ -535,30 +574,18 @@ h1 {
 
 body.player-open { overflow: hidden; }
 
-.refreshing svg {
-  animation: spin .75s linear infinite;
-}
+.refreshing svg { animation: spin .75s linear infinite; }
 
 @keyframes spin {
   to { transform: rotate(360deg); }
 }
 
 @media (max-width: 780px) {
-  .app-shell {
-    width: min(100% - 20px, 680px);
-  }
-
+  .app-shell { width: min(100% - 20px, 680px); }
   .hero { min-height: 190px; }
 
-  .hero-icon {
-    width: 82px;
-    height: 82px;
-  }
-
-  .hero-icon svg {
-    width: 34px;
-    height: 34px;
-  }
+  .hero-icon { width: 82px; height: 82px; }
+  .hero-icon svg { width: 34px; height: 34px; }
 
   .toolbar {
     align-items: stretch;
@@ -566,17 +593,13 @@ body.player-open { overflow: hidden; }
   }
 
   .filters { padding-bottom: 2px; }
-
   .channel-grid { grid-template-columns: 1fr; }
 }
 
 @media (max-width: 520px) {
   .topbar { padding-top: 4px; }
 
-  .brand-mark {
-    width: 42px;
-    height: 42px;
-  }
+  .brand-mark { width: 42px; height: 42px; }
 
   .hero {
     min-height: 202px;
@@ -585,7 +608,6 @@ body.player-open { overflow: hidden; }
   }
 
   .hero-icon { display: none; }
-
   .hero .status-pill { margin-bottom: 19px; }
 
   .channel-card {
@@ -604,4 +626,17 @@ body.player-open { overflow: hidden; }
   }
 
   .video-wrap { border-radius: 17px; }
+
+  .custom-controls {
+    left: 8px;
+    right: 8px;
+    bottom: 8px;
+  }
+
+  .player-status {
+    max-width: 96px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
 }
